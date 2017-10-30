@@ -4,12 +4,12 @@
 
 
 void writeAll(int* arr, int size);
+int returnNumber(int a, int b, int** array2D);
 
-GeneticAlgorithm::GeneticAlgorithm(int** & distanceMatrix, int genomSize) : 
-	cityDistanceMatrix(distanceMatrix) ,
-	cityIndex()
+GeneticAlgorithm::GeneticAlgorithm(int** & distanceMatrix, int genomSize, int populationSize) :
+	cityDistanceMatrix(distanceMatrix) , m_size(genomSize), cityIndex()
 {
-	generateGenoms(genomSize);
+	generateGenoms(genomSize, populationSize);
 }
 
 
@@ -19,13 +19,15 @@ GeneticAlgorithm::~GeneticAlgorithm()
 	{
 		delete cityIndex.at(i);
 	}
+
+	delete marks;
 }
 
-void GeneticAlgorithm::generateGenoms( int size)
+void GeneticAlgorithm::generateGenoms( int size, int populationSize)
 {
 	srand(time(NULL));
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < populationSize; i++)
 	{
 		int* newArray = new int[size]();
 		initArray(newArray, size, -1);
@@ -40,7 +42,7 @@ void GeneticAlgorithm::generateGenoms( int size)
 			}
 		}
 
-		writeAll(newArray, size);
+		//writeAll(newArray, size);
 		cityIndex.push_back(newArray);
 	}
 }
@@ -76,10 +78,53 @@ bool GeneticAlgorithm::isDuplicateInArray(int * myArray, int size)
 	return false;
 }
 
+void GeneticAlgorithm::markPopulations()
+{
+	marks = new int[m_size]();
+
+	int tmp = -1;
+	int a, b;
+
+	for (size_t i = 0; i < cityIndex.size(); i++)
+	{
+		for (size_t j = 0; j < m_size; j++)
+		{
+			if (j + 1 < m_size)
+			{
+				a = cityIndex.at(i)[j];
+				b = cityIndex.at(i)[j + 1];
+
+				tmp = returnNumber(a, b, cityDistanceMatrix);
+
+				marks[i] += tmp;
+			}
+			else
+			{
+				a = cityIndex.at(i)[j];
+				b = cityIndex.at(i)[0];
+
+				tmp = returnNumber(a, b, cityDistanceMatrix);
+
+				marks[i] += tmp;
+			}
+		}
+
+		std::cout << "Mark: " << marks[i] << std::endl;
+	}
+}
+
 void writeAll(int* arr, int size)
 {
 	for (size_t i = 0; i < size; i++)
 	{
 		std::cout << "---- " << arr[i] << std::endl;
 	}
+}
+
+int returnNumber(int a, int b, int** array2D)
+{
+	if (a > b)
+		return array2D[a][b];
+	else
+		return array2D[b][a];
 }

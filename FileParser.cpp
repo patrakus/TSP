@@ -17,7 +17,7 @@ int** FileParser::loadFile(const std::string& path)
 {
 	
 	std::string fileText;
-	int** rangeArray;
+	int** rangeArray = 0;
 	//int size;
 
 	try
