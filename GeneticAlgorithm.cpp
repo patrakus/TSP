@@ -127,7 +127,7 @@ void GeneticAlgorithm::tournamentSelection(const int k)
 	//std::array<int**, 0> selectedIndividuals;
 
 	int* selectedIndividuals = new int[k];
-	std::vector<int*> newCityIndex;
+	//std::vector<int*> newCityIndex;
 
 
 	for (size_t i = 0; i < cityIndex.size(); i++)
@@ -148,8 +148,56 @@ void GeneticAlgorithm::tournamentSelection(const int k)
 		newCityIndex.push_back(cityIndex[better]);
 	}
 
-	cityIndex = newCityIndex;
+	//cityIndex = newCityIndex;
 	 
+}
+
+void GeneticAlgorithm::onePointCrossOver(float probality)
+{
+	int parents[2];
+
+	int tt = 0;
+
+	for(int i = 0; i < cityIndex.size(); i++)
+	{
+
+
+		parents[tt] = rand() % cityIndex.size();
+
+		float n = ((rand() % 100) + 1.f) / 100.f;
+
+		if (n > probality)
+		{
+			switch (tt)
+			{
+			case 0:
+				tt++;
+				break;
+			case 1:
+				int crossPoint = rand() % m_size;
+				swap(newCityIndex[parents[0]], newCityIndex[parents[1]], crossPoint);
+				tt = 0;
+				break;
+			}
+		}
+		else
+		{
+			cityIndex[i] = newCityIndex[parents[tt]];
+		}
+		
+	}
+}
+
+void GeneticAlgorithm::swap(int* a, int* b, int crossPoint)
+{
+	int tmp;
+
+	for (size_t i = crossPoint; i < m_size; i++)
+	{
+		tmp = b[i];
+		b[i] = a[i];
+		a[i] = tmp;
+	}
 }
 
 void writeAll(int* arr, int size)

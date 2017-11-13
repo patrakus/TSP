@@ -5,6 +5,24 @@
 // turniejowa selekcja
 // ko³a ruletki selekcja
 
+// do przeczytania
+
+/*
+program ma wczytywac dowolny plik
+
+populacja m na n
+
+selekcja ruletka i turniej
+krzyzowanie(dowolna) min.1 --> z wyk³adów
+mutacja(dowolna) min.1 --. z wyk³adów
+
+zapetliæ aby wykonaæ milion pokoleñ
+
+algorytm ma znaleœæ najlepszego osobnika ze wszyskich pokoleñ
+
+8 stycznia s¹ zawody
+*/
+
 int main()
 {
 	std::cout << "Hello TSP" << std::endl;

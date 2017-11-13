@@ -4,6 +4,7 @@
 class GeneticAlgorithm
 {
 	std::vector<int*> cityIndex;
+	std::vector<int*> newCityIndex;
 	int** cityDistanceMatrix;
 	int* marks;
 	int m_size;
@@ -18,4 +19,9 @@ public:
 
 	void markPopulations();
 	void tournamentSelection(int k);
+
+	void onePointCrossOver(float probalityOfMixing);
+
+private:
+	void swap(int* a, int* b, int crossPoint);
 };
