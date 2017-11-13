@@ -1,6 +1,11 @@
 #include "GeneticAlgorithm.h"
 #include <ctime>
-#include<iostream>
+#include <iostream>
+#include <algorithm>
+#include <array>
+#include <iterator>
+
+// use std::array instead of c style array
 
 
 void writeAll(int* arr, int size);
@@ -9,7 +14,7 @@ int returnNumber(int a, int b, int** array2D);
 GeneticAlgorithm::GeneticAlgorithm(int** & distanceMatrix, int genomSize, int populationSize) :
 	cityDistanceMatrix(distanceMatrix) , m_size(genomSize), cityIndex()
 {
-	generateGenoms(genomSize, populationSize);
+	generatePopulation(genomSize, populationSize);
 }
 
 
@@ -23,9 +28,11 @@ GeneticAlgorithm::~GeneticAlgorithm()
 	delete marks;
 }
 
-void GeneticAlgorithm::generateGenoms( int size, int populationSize)
+void GeneticAlgorithm::generatePopulation( int size, int populationSize)
 {
 	srand(time(NULL));
+
+	
 
 	for (int i = 0; i < populationSize; i++)
 	{
@@ -111,6 +118,38 @@ void GeneticAlgorithm::markPopulations()
 
 		std::cout << "Mark: " << marks[i] << std::endl;
 	}
+}
+
+void GeneticAlgorithm::tournamentSelection(const int k)
+{
+	srand(time(NULL));
+
+	//std::array<int**, 0> selectedIndividuals;
+
+	int* selectedIndividuals = new int[k];
+	std::vector<int*> newCityIndex;
+
+
+	for (size_t i = 0; i < cityIndex.size(); i++)
+	{
+		for (size_t i = 0; i < k; i++)
+		{
+			selectedIndividuals[i] = rand() % cityIndex.size();
+		}
+
+		int better = selectedIndividuals[0];
+
+		for (size_t i = 1; i < k; i++)
+		{
+			if (marks[better] > marks[selectedIndividuals[i]])
+				better = selectedIndividuals[i];
+		}
+		
+		newCityIndex.push_back(cityIndex[better]);
+	}
+
+	cityIndex = newCityIndex;
+	 
 }
 
 void writeAll(int* arr, int size)

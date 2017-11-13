@@ -23,6 +23,7 @@ int main()
 
 	GeneticAlgorithm testA(a, parserTest.size, 25);
 	testA.markPopulations();
+	testA.tournamentSelection(10);
 
 	system("pause");
 	
