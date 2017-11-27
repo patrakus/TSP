@@ -211,7 +211,7 @@ void GeneticAlgorithm<type>::doWork()
 
 	for (size_t i = 0; i < newGeneration.size(); i++)
 	{
-		inverseMutation(0.1f, i);
+		inverseMutation(0.05f, i);
 	}
 
 	DNAForwardList = newGeneration;
@@ -277,7 +277,7 @@ void GeneticAlgorithm<type>::swap(int parentA, int parentB, int crossPoint)
 	DNA<type> child1 = DNAForwardList[parentA];
 	DNA<type> child2 = DNAForwardList[parentB];
 
-	for (size_t i = child1.genom.size() - 1; i +1 >= crossPoint + 1; i--)
+	for (size_t i = child1.genom.size() - 1; i >= crossPoint + 1; i--)
 	{
 		child1.genom[i] = DNAForwardList[parentB].genom[i];
 		child2.genom[i] = DNAForwardList[parentA].genom[i];
@@ -308,12 +308,30 @@ void GeneticAlgorithm<type>::inverseMutation(float probalityOfMutation, size_t c
 			point2 = tmp;
 		}
 
-		for (size_t i = point1, j = point2; distance(i, j) > 0; i++, j--)
+		/*for (size_t i = 0; i < newGeneration[childIndex].genom.size(); i++)
 		{
+			std::cout << newGeneration[childIndex].genom[i] << ":";
+		}
+		std::cout << std::endl;*/
+
+		for (size_t i = point1, j = point2;  !(i >= j) ; i++, j--)
+		{
+			//std::cout << distance(i, j) << std::endl;
+			/*std::cout << i << std::endl;
+			std::cout << j << std::endl;
+			std::cout << "-------------------------" << std::endl;*/
+
 			tmp = newGeneration[childIndex].genom[i];
 			newGeneration[childIndex].genom[i] = newGeneration[childIndex].genom[j];
 			newGeneration[childIndex].genom[j] = tmp;
 		}
+
+		/*for (size_t i = 0; i < newGeneration[childIndex].genom.size(); i++)
+		{
+			std::cout << newGeneration[childIndex].genom[i] << ":";
+		}
+		std::cout << std::endl;*/
+		//system("pause");
 	}
 }
 
@@ -329,7 +347,6 @@ bool GeneticAlgorithm<type>::isDuplicate(DNA<type> gen)
 			{
 				return true;
 			}
-
 		}
 	}
 	return false;

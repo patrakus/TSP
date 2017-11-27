@@ -43,10 +43,13 @@ int main()
 
 	GeneticAlgorithm<int> testA(a, parserTest.size, 20, rd);
 
-	for (size_t i = 0; i < 5000; i++)
+	for (size_t i = 0; i < 500000; i++)
 	{
 		testA.doWork();
 	}
+
+
+	
 
 	auto end = std::chrono::high_resolution_clock::now();
 
