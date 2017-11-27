@@ -1,8 +1,9 @@
 #include "FileParser.h"
 #include <sstream>
+#include <iostream>
 
 
-FileParser::FileParser(): size()
+FileParser::FileParser() : size(), rangeArray()
 {
 	//loadFile(path);
 }
@@ -13,11 +14,9 @@ FileParser::~FileParser()
 }
 
 
-int** FileParser::loadFile(const std::string& path)
+std::shared_ptr<std::vector<std::vector<int>>> FileParser::loadFile(const std::string& path)
 {
-	
-	std::string fileText;
-	int** rangeArray;
+	//int** rangeArray = 0;
 	//int size;
 
 	try
@@ -27,12 +26,13 @@ int** FileParser::loadFile(const std::string& path)
 
 		if (file.is_open())
 		{
-			create2DArray(rangeArray, file, size);
+			create2DArray(file);
 
 			for (int i = 0; i < size; i++)
 			{
 				std::getline(file, line);
-				rangeArray[i] = lineToNumbers(size, line);
+
+				rangeArray->push_back( lineToNumbers(size, line));
 			}
 		}
 		else if (file.bad())
@@ -49,12 +49,11 @@ int** FileParser::loadFile(const std::string& path)
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	
 
 	return rangeArray;
 }
 
-void FileParser::create2DArray(int ** &pointer, std::ifstream& file, int& size)
+void FileParser::create2DArray(std::ifstream& file)
 {
 	std::string line;
 
@@ -62,20 +61,25 @@ void FileParser::create2DArray(int ** &pointer, std::ifstream& file, int& size)
 
 	size = std::stoi(line);
 
+
+
 	if (size != 0 && size > 0)
 	{
-		pointer = new int*[size];
+		std::shared_ptr<std::vector<std::vector<int>>> tmp(new std::vector<std::vector<int>>);
+		//tmp->resize(size);
 
-		for (int i = 0; i < size; i++)
+		/*for (int i = 0; i < size; i++)
 		{
-			pointer[i] = new int[size];
-		}
+			tmp.get[i].resize(size);
+		}*/
+
+		rangeArray = tmp;
 	}
 }
 
-int * FileParser::lineToNumbers(int size, const std::string & line)
+std::vector<int> FileParser::lineToNumbers(int size, const std::string & line)
 {
-	int* numbers = new int[size];
+	std::vector<int> numbers;
 
 	std::stringstream ssInput(line);
 
@@ -88,13 +92,19 @@ int * FileParser::lineToNumbers(int size, const std::string & line)
 			ssInput >> number;
 
 			if (number != "")
-				numbers[i] = std::stoi(number);
+				numbers.push_back(std::stoi(number));
+			else
+				numbers.push_back(0);
 		}
 		else
 		{
-			numbers[i] = 0;
+			numbers.push_back(0);
 		}
 	}
+
+	//numbers.shrink_to_fit();
+
+	//std::cout << numbers.size() << std::endl;
 
 	return numbers;
 }
