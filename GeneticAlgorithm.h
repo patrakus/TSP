@@ -253,6 +253,7 @@ int GeneticAlgorithm<type>::tournamentSelection(int k) // k - iloœc zwyciêsców n
 template<typename type>
 void GeneticAlgorithm<type>::onePointCrossOver(float probalityOfMixing, int parent[])
 {
+	// powinno siê wylosowaæ 2 rodziców
 	std::uniform_real_distribution<float> floatDist(0.f, 1.f);
 	std::uniform_int_distribution<int> intDist(0, DNAForwardList[0].genom.size() - 1);
 	std::uniform_int_distribution<> smallDist(0, DNAForwardList.size() - 1);
