@@ -278,11 +278,94 @@ void GeneticAlgorithm<type>::swap(int parentA, int parentB, int crossPoint)
 	DNA<type> child1 = DNAForwardList[parentA];
 	DNA<type> child2 = DNAForwardList[parentB];
 
-	for (size_t i = child1.genom.size() - 1; i >= crossPoint + 1; i--)
+	//std::cout << "Gen1: ";
+	//for (size_t j = 0; j < child1.genom.size(); j++)
+	//{
+	//	std::cout << child1.genom[j] << " ";
+	//}
+	//std::cout << std::endl;
+	//std::cout << "Gen2: ";
+	//for (size_t j = 0; j < child1.genom.size(); j++)
+	//{
+	//	std::cout << child2.genom[j] << " ";
+	//}
+
+	//for (size_t i = child1.genom.size() - 1; i >= crossPoint + 1; i--)
+	//{
+	//	child1.genom[i] = DNAForwardList[parentB].genom[i];
+	//	child2.genom[i] = DNAForwardList[parentA].genom[i];
+	//}
+
+	
+
+	int temp;
+
+	for (size_t i = 0; i < child1.genom.size(); i++)
 	{
-		child1.genom[i] = DNAForwardList[parentB].genom[i];
-		child2.genom[i] = DNAForwardList[parentA].genom[i];
+		if (i > crossPoint) break;
+
+		temp = DNAForwardList[parentA].genom[i];
+		int incrementer = -1;
+
+		for (size_t j = 0; j < child1.genom.size(); j++)
+		{
+			if (temp == child1.genom[j] && i != j)
+			{
+				incrementer++;
+				j = 0;
+
+				if (!(i + incrementer < child1.genom.size()))
+				{
+					incrementer = -i;
+				}
+
+				temp = DNAForwardList[parentB].genom[i + incrementer];
+			}
+		}
+
+		child1.genom[i] = temp;
 	}
+
+	for (size_t i = 0; i < child1.genom.size(); i++)
+	{
+		if (i > crossPoint) break;
+
+		temp = DNAForwardList[parentB].genom[i];
+		int incrementer = -1;
+
+		for (size_t j = 0; j < child1.genom.size(); j++)
+		{
+			if (temp == child2.genom[j] && i != j)
+			{
+				incrementer++;
+				j = 0;
+
+				if (!(i + incrementer < child2.genom.size()))
+				{
+					incrementer = -i;
+				}
+
+				temp = DNAForwardList[parentA].genom[i + incrementer];
+			}
+		}
+
+		child2.genom[i] = temp;
+	}
+
+	/*std::cout << "Gen1: ";
+	for (size_t j = 0; j < child1.genom.size(); j++)
+	{
+		std::cout << child1.genom[j] << " ";
+		system("pause");
+	}
+	std::cout << std::endl;
+	std::cout << "Gen2: ";
+	for (size_t j = 0; j < child1.genom.size(); j++)
+	{
+		std::cout << child2.genom[j] << " ";
+		system("pause");
+	}
+	std::cout << std::endl;*/
 
 	newGeneration.push_back(child1);
 	newGeneration.push_back(child2);
